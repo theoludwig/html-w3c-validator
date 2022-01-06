@@ -1,0 +1,37 @@
+name: 'Lint'
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  lint:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: 'actions/checkout@v2'
+
+      - name: 'Use Node.js'
+        uses: 'actions/setup-node@v2.4.1'
+        with:
+          node-version: '16.x'
+          cache: 'npm'
+
+      - name: 'Install'
+        run: 'npm install'
+
+      - name: 'lint:commit'
+        run: 'npm run lint:commit -- --to "${{ github.sha }}"'
+
+      - name: 'lint:editorconfig'
+        run: 'npm run lint:editorconfig'
+
+      - name: 'lint:markdown'
+        run: 'npm run lint:markdown'
+
+      - name: 'lint:typescript'
+        run: 'npm run lint:typescript'
+
+      - name: 'lint:prettier'
+        run: 'npm run lint:prettier'

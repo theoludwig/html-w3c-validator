@@ -1,0 +1,15 @@
+{
+  "name": "html-w3c-validator",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
+  "extensions": [
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "davidanson.vscode-markdownlint",
+    "ms-azuretools.vscode-docker"
+  ],
+  "postAttachCommand": ["npm", "install"],
+  "remoteUser": "node"
+}

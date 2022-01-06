@@ -1,0 +1,104 @@
+<h1 align="center">html-w3c-validator</h1>
+
+<p align="center">
+  <strong>CLI for validating multiple html pages using <a href="https://validator.w3.org/">validator.w3.org</a>.</strong>
+</p>
+
+</p>
+
+<p align="center">
+  <a href="./CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/licence-MIT-blue.svg" alt="Licence MIT"/></a>
+  <a href="./CODE_OF_CONDUCT.md"><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg" alt="Contributor Covenant" /></a>
+  <a href="https://dependabot.com/"><img src="https://badgen.net/github/dependabot/Divlo/html-w3c-validator?icon=dependabot" alt="Dependabot badge" /></a>
+  <br />
+  <a href="https://github.com/Divlo/html-w3c-validator/actions/workflows/build.yml"><img src="https://github.com/Divlo/html-w3c-validator/actions/workflows/build.yml/badge.svg?branch=develop" /></a>
+  <a href="https://github.com/Divlo/html-w3c-validator/actions/workflows/lint.yml"><img src="https://github.com/Divlo/html-w3c-validator/actions/workflows/lint.yml/badge.svg?branch=develop" /></a>
+  <a href="https://github.com/Divlo/html-w3c-validator/actions/workflows/test.yml"><img src="https://github.com/Divlo/html-w3c-validator/actions/workflows/test.yml/badge.svg?branch=develop" /></a>
+  <br />
+  <a href="https://conventionalcommits.org"><img src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg" alt="Conventional Commits" /></a>
+  <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release" /></a>
+  <a href="https://www.npmjs.com/package/html-w3c-validator"><img src="https://img.shields.io/npm/v/html-w3c-validator.svg" alt="npm version"></a>
+</p>
+
+## 📜 About
+
+**html-w3c-validator** is a CLI tool to validate multiple html pages using [validator.w3.org](https://validator.w3.org/).
+
+You might use a JavaScript framework or simply use HTML: **you should validate your production HTML** and this validation should be part of your CI/CD pipeline (tests, linting, etc.).
+
+### Why should I validate my HTML pages?
+
+Quote from [https://validator.w3.org/docs/help.html#why-validate](https://validator.w3.org/docs/help.html#why-validate):
+
+> One of the important maxims of computer programming is: "Be conservative in what you produce; be liberal in what you accept."
+>
+> Browsers follow the second half of this maxim by accepting Web pages and trying to display them even if they're not legal HTML. Usually this means that the browser will try to make educated guesses about what you probably meant. The problem is that different browsers (or even different versions of the same browser) will make different guesses about the same illegal construct; worse, if your HTML is really pathological, the browser could get hopelessly confused and produce a mangled mess, or even crash.
+
+## ⚙️ Getting Started
+
+You can combine **html-w3c-validator** with [start-server-and-test](https://github.com/bahmutov/start-server-and-test) to validate HTML pages of your project.
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) >= 16.0.0
+
+### Installation (with [start-server-and-test](https://github.com/bahmutov/start-server-and-test))
+
+```sh
+npm install --save-dev html-w3c-validator start-server-and-test
+```
+
+## ⚙️ Configuration
+
+### `package.json`
+
+```jsonc
+{
+  "scripts": {
+    // Command to start the server serving your HTML pages (e.g: using vercel/serve)
+    "start": "serve ./build",
+
+    // Command to validate your HTML pages
+    "test:html-w3c-validator": "start-server-and-test 'start' 'http://localhost:3000' 'html-w3c-validator'"
+  }
+}
+```
+
+### `.html-w3c-validator.json`
+
+```json
+{
+  "urls": ["http://localhost:3000/", "http://localhost:3000/about"]
+}
+```
+
+## Usage
+
+```sh
+npm run test:html-w3c-validator
+```
+
+Example of output:
+
+```txt
+
+```
+
+### Options
+
+```text
+-V, --version       Output the version number.
+-h, --help          Display help for command.
+--config            Path to a configuration file (default: `.html-w3c-validator.json`).
+```
+
+## 💡 Contributing
+
+Anyone can help to improve the project, submit a Feature Request, a bug report or even correct a simple spelling mistake.
+
+The steps to contribute can be found in the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
+
+## 📄 License
+
+[MIT](./LICENSE)

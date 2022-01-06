@@ -1,0 +1,21 @@
+{
+  "extends": ["standard-with-typescript", "prettier"],
+  "plugins": ["unicorn", "import", "prettier"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "import/order": [
+      "error",
+      { "groups": ["builtin", "external", "internal"] }
+    ],
+    "import/extensions": ["error", "always"],
+    "unicorn/prefer-node-protocol": "error",
+    "unicorn/prevent-abbreviations": "error"
+  }
+}

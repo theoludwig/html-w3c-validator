@@ -29,7 +29,6 @@
   ],
   "scripts": {
     "build": "rimraf ./build && swc ./src --out-dir ./build && tsc",
-    "dev": "swc ./src --out-dir ./build --watch",
     "lint:commit": "commitlint",
     "lint:editorconfig": "editorconfig-checker",
     "lint:markdown": "markdownlint '**/*.md' --dot --ignore node_modules",

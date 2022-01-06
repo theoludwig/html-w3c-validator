@@ -5,7 +5,5 @@
     "^.+\\.(t|j)sx?$": ["@swc/jest"]
   },
   "rootDir": "./src",
-  "collectCoverage": true,
-  "coverageDirectory": "../coverage/",
-  "coverageReporters": ["text", "cobertura"]
+  "setupFiles": ["<rootDir>/__test__/setup.ts"]
 }

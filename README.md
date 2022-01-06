@@ -65,7 +65,7 @@ npm install --save-dev html-w3c-validator start-server-and-test
 }
 ```
 
-### `.html-w3c-validator.json`
+### `.html-w3c-validatorrc.json`
 
 ```json
 {
@@ -79,18 +79,22 @@ npm install --save-dev html-w3c-validator start-server-and-test
 npm run test:html-w3c-validator
 ```
 
-Example of output:
+Example of output (in case of success):
 
 ```txt
+✔ Validating http://localhost:3000/
+✔ Validating http://localhost:3000/about
 
+Success: HTML validation (W3C) passed! 🎉
 ```
+
+See the [./example](./example) folder for practical usage.
 
 ### Options
 
 ```text
 -V, --version       Output the version number.
 -h, --help          Display help for command.
---config            Path to a configuration file (default: `.html-w3c-validator.json`).
 ```
 
 ## 💡 Contributing

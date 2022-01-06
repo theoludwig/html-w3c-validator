@@ -1,3 +1,7 @@
+import path from 'node:path'
+
+import execa from 'execa'
+
 import { cli } from '../cli.js'
 import { HTMLValidatorCommand } from '../HTMLValidatorCommand.js'
 
@@ -12,11 +16,11 @@ describe('html-w3c-validator', () => {
   })
 
   it('succeeds and validate the html correctly', async () => {
-    console.log = jest.fn()
-    const exitCode = await cli.run([], {
-      stdin: process.stdin
-    })
-    expect(console.log).toHaveBeenCalledWith('html-w3c-validator')
+    const examplePath = path.join(__dirname, '..', '..', 'example')
+    process.chdir(examplePath)
+    await execa('rimraf', ['node_modules'])
+    await execa('npm', ['install'])
+    const { exitCode } = await execa('npm', ['run', 'test:html-w3c-validator'])
     expect(exitCode).toEqual(0)
   })
 })

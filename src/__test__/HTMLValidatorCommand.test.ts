@@ -10,7 +10,7 @@ describe('html-w3c-validator', () => {
     jest.clearAllMocks()
   })
 
-  it('should be instance of the command', async () => {
+  it('should be instance of the command', () => {
     const command = cli.process([])
     expect(command).toBeInstanceOf(HTMLValidatorCommand)
   })

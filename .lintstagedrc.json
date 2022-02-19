@@ -6,5 +6,5 @@
     "jest --findRelatedTests"
   ],
   "*.{yml,json}": ["prettier --write"],
-  "*.{md}": ["prettier --write", "markdownlint --dot --fix"]
+  "*.md": ["prettier --write", "markdownlint --dot --fix"]
 }

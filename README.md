@@ -56,10 +56,10 @@ npm install --save-dev html-w3c-validator start-server-and-test
 {
   "scripts": {
     // Command to start the server serving your HTML pages (e.g: using vercel/serve)
-    "start": "serve ./build",
+    "start": "serve \"./build\"",
 
     // Command to validate your HTML pages
-    "test:html-w3c-validator": "start-server-and-test 'start' 'http://localhost:3000' 'html-w3c-validator'"
+    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://localhost:3000\" \"html-w3c-validator\""
   }
 }
 ```

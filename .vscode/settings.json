@@ -1,33 +1,10 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.preferences.importModuleSpecifierEnding": "js",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.configPath": ".prettierrc.json",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": true
-  },
-  "[markdown]": {
-    "editor.autoClosingBrackets": "always",
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[yaml]": {
-    "editor.autoClosingBrackets": "always",
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[json]": {
-    "editor.autoClosingBrackets": "always",
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[jsonc]": {
-    "editor.autoClosingBrackets": "always",
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescript]": {
-    "editor.autoClosingBrackets": "always",
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascript]": {
-    "editor.autoClosingBrackets": "always",
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

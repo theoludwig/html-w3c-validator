@@ -15,23 +15,14 @@ jobs:
       - name: 'Use Node.js'
         uses: 'actions/setup-node@v2.5.1'
         with:
-          node-version: '16.x'
+          node-version: 'lts/*'
           cache: 'npm'
 
       - name: 'Install'
         run: 'npm install'
 
-      - name: 'lint:commit'
-        run: 'npm run lint:commit -- --to "${{ github.sha }}"'
-
-      - name: 'lint:editorconfig'
-        run: 'npm run lint:editorconfig'
-
-      - name: 'lint:markdown'
-        run: 'npm run lint:markdown'
-
-      - name: 'lint:typescript'
-        run: 'npm run lint:typescript'
-
-      - name: 'lint:prettier'
-        run: 'npm run lint:prettier'
+      - run: 'npm run lint:commit -- --to "${{ github.sha }}"'
+      - run: 'npm run lint:editorconfig'
+      - run: 'npm run lint:markdown'
+      - run: 'npm run lint:typescript'
+      - run: 'npm run lint:prettier'

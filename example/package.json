@@ -2,8 +2,8 @@
   "name": "example",
   "private": true,
   "scripts": {
-    "start": "serve ./build",
-    "test:html-w3c-validator": "start-server-and-test 'start' 'http://localhost:3000' 'html-w3c-validator'"
+    "start": "serve \"./build\"",
+    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://localhost:3000\" \"html-w3c-validator\""
   },
   "devDependencies": {
     "serve": "13.0.2",

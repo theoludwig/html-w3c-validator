@@ -24,7 +24,7 @@
 
 **html-w3c-validator** is a CLI tool to validate multiple html pages using [validator.w3.org](https://validator.w3.org/).
 
-You might use a JavaScript framework or simply use HTML: **you should validate your production HTML** and this validation should be part of your CI/CD pipeline (tests, linting, etc.).
+You might use a JavaScript framework or simply use HTML but **you should always validate your production HTML** and this validation should be part of your CI/CD pipeline (tests, linting, etc.).
 
 ### Why should I validate my HTML pages?
 
@@ -66,9 +66,12 @@ npm install --save-dev html-w3c-validator start-server-and-test
 
 ### `.html-w3c-validatorrc.json`
 
-```json
+```jsonc
 {
-  "urls": ["http://localhost:3000/", "http://localhost:3000/about"]
+  "urls": ["http://localhost:3000/", "http://localhost:3000/about"],
+
+  // You can also specify HTML files instead of URLs
+  "files": ["./index.html", "./about.html"]
 }
 ```
 

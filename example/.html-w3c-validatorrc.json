@@ -1,3 +1,4 @@
 {
-  "urls": ["http://localhost:3000/", "http://localhost:3000/about"]
+  "urls": ["http://localhost:3000/", "http://localhost:3000/about"],
+  "files": ["./build/index.html", "./build/about.html"]
 }

@@ -5,12 +5,12 @@
     "project": "./tsconfig.json"
   },
   "env": {
-    "node": true,
-    "jest": true
+    "node": true
   },
   "rules": {
     "prettier/prettier": "error",
     "import/extensions": ["error", "always"],
-    "unicorn/prevent-abbreviations": "error"
+    "unicorn/prevent-abbreviations": "error",
+    "unicorn/prefer-node-protocol": "error"
   }
 }

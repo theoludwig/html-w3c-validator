@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import { Command } from 'clipanion'
 import chalk from 'chalk'
 import ora from 'ora'
+import logSymbols from 'log-symbols'
 import type {
   ValidationMessageLocationObject,
   ParsedJsonAsValidationResults
@@ -26,6 +27,21 @@ interface Error {
   messagesTable: string[][]
 }
 
+interface Result {
+  data: string
+  isSuccess: boolean
+}
+
+const printResults = (results: Result[]): void => {
+  for (const result of results) {
+    if (result.isSuccess) {
+      console.log(logSymbols.success, result.data)
+    } else {
+      console.log(logSymbols.error, result.data)
+    }
+  }
+}
+
 export class HTMLValidatorCommand extends Command {
   static usage = {
     description:
@@ -40,7 +56,6 @@ export class HTMLValidatorCommand extends Command {
           `No config file found at ${configPath}. Please create ${CONFIG_FILE_NAME}.`
         )
       }
-
       const configData = await fs.promises.readFile(configPath, {
         encoding: 'utf-8'
       })
@@ -74,72 +89,75 @@ export class HTMLValidatorCommand extends Command {
       const dataToValidate = [...urls, ...files]
       const errors: Error[] = []
       let isValid = true
-      for (const { data, type } of dataToValidate) {
-        const loader = ora(`Validating ${data}`).start()
-        try {
-          const options = {
-            format: 'json' as 'json' | undefined
-          }
-          let result: ParsedJsonAsValidationResults | undefined
-          if (type === 'url') {
-            result = await validateHTML({
-              url: data,
-              isLocal: true,
-              ...options
-            })
-          } else if (type === 'file') {
-            const htmlPath = path.resolve(CURRENT_DIRECTORY, data)
-            if (!(await isExistingPath(htmlPath))) {
-              throw new Error(
-                `No file found at ${htmlPath}. Please check the path.`
-              )
+      const loader = ora(`Validating HTML (W3C)...`).start()
+      const results: Result[] = []
+      await Promise.all(
+        dataToValidate.map(async ({ data, type }) => {
+          try {
+            const options = {
+              format: 'json' as 'json' | undefined
             }
-            const html = await fs.promises.readFile(htmlPath, {
-              encoding: 'utf-8'
-            })
-            result = await validateHTML({
-              data: html,
-              ...options
-            })
-          } else {
-            throw new Error('Invalid type')
-          }
-          const hasErrors = result.messages.some((message) => {
-            return message.type === 'error'
-          })
-          if (!hasErrors) {
-            loader.succeed()
-          } else {
-            loader.fail()
-            const messagesTable: string[][] = []
-            for (const message of result.messages) {
-              if (message.type === 'error') {
-                const row: string[] = []
-                row.push(chalk.red(message.type))
-                row.push(message.message)
-                const violation = message as ValidationMessageLocationObject
-                if (violation.extract != null) {
-                  row.push(
-                    `line: ${violation.lastLine}, column: ${violation.firstColumn}-${violation.lastColumn}`
-                  )
-                }
-                messagesTable.push(row)
+            let result: ParsedJsonAsValidationResults | undefined
+            if (type === 'url') {
+              result = await validateHTML({
+                url: data,
+                isLocal: true,
+                ...options
+              })
+            } else if (type === 'file') {
+              const htmlPath = path.resolve(CURRENT_DIRECTORY, data)
+              if (!(await isExistingPath(htmlPath))) {
+                throw new Error(
+                  `No file found at ${htmlPath}. Please check the path.`
+                )
               }
+              const html = await fs.promises.readFile(htmlPath, {
+                encoding: 'utf-8'
+              })
+              result = await validateHTML({
+                data: html,
+                ...options
+              })
+            } else {
+              throw new Error('Invalid type')
             }
-            errors.push({ data, messagesTable })
+            const hasErrors = result.messages.some((message) => {
+              return message.type === 'error'
+            })
+            if (!hasErrors) {
+              results.push({ data, isSuccess: true })
+            } else {
+              results.push({ data, isSuccess: false })
+              const messagesTable: string[][] = []
+              for (const message of result.messages) {
+                if (message.type === 'error') {
+                  const row: string[] = []
+                  row.push(chalk.red(message.type))
+                  row.push(message.message)
+                  const violation = message as ValidationMessageLocationObject
+                  if (violation.extract != null) {
+                    row.push(
+                      `line: ${violation.lastLine}, column: ${violation.firstColumn}-${violation.lastColumn}`
+                    )
+                  }
+                  messagesTable.push(row)
+                }
+              }
+              errors.push({ data, messagesTable })
+              isValid = false
+            }
+          } catch (error) {
             isValid = false
+            if (error instanceof Error) {
+              const messagesTable: string[][] = [[error.message]]
+              errors.push({ data, messagesTable })
+            }
           }
-        } catch (error) {
-          loader.fail()
-          isValid = false
-          if (error instanceof Error) {
-            const messagesTable: string[][] = [[error.message]]
-            errors.push({ data, messagesTable })
-          }
-        }
-      }
-
+        })
+      )
       if (!isValid) {
+        loader.fail()
+        printResults(results)
         for (const error of errors) {
           console.error(`\n${error.data}`)
           console.error(table(error.messagesTable))
@@ -148,10 +166,10 @@ export class HTMLValidatorCommand extends Command {
         console.error()
         throw new Error('HTML validation (W3C) failed!')
       }
-      console.log()
-      console.log(
+      loader.succeed(
         `${chalk.bold.green('Success:')} HTML validation (W3C) passed! 🎉`
       )
+      printResults(results)
       return 0
     } catch (error) {
       if (error instanceof Error) {

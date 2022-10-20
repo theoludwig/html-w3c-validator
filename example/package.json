@@ -3,10 +3,10 @@
   "private": true,
   "scripts": {
     "start": "serve \"./build\"",
-    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://localhost:3000\" \"html-w3c-validator\""
+    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://127.0.0.1:3000\" \"html-w3c-validator\""
   },
   "devDependencies": {
-    "serve": "13.0.2",
+    "serve": "14.0.1",
     "start-server-and-test": "1.14.0",
     "html-w3c-validator": "file:.."
   }

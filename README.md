@@ -59,7 +59,7 @@ npm install --save-dev html-w3c-validator start-server-and-test
     "start": "serve \"./build\"",
 
     // Command to validate your HTML pages
-    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://localhost:3000\" \"html-w3c-validator\""
+    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://127.0.0.1:3000\" \"html-w3c-validator\""
   }
 }
 ```
@@ -68,7 +68,7 @@ npm install --save-dev html-w3c-validator start-server-and-test
 
 ```jsonc
 {
-  "urls": ["http://localhost:3000/", "http://localhost:3000/about"],
+  "urls": ["http://127.0.0.1:3000/", "http://127.0.0.1:3000/about"],
 
   // You can also specify HTML files instead of URLs
   "files": ["./index.html", "./about.html"]
@@ -84,8 +84,8 @@ npm run test:html-w3c-validator
 Example of output (in case of success):
 
 ```txt
-✔ Validating http://localhost:3000/
-✔ Validating http://localhost:3000/about
+✔ Validating http://127.0.0.1:3000/
+✔ Validating http://127.0.0.1:3000/about
 
 Success: HTML validation (W3C) passed! 🎉
 ```

@@ -4,10 +4,11 @@ import fs from 'node:fs'
 import { Command } from 'clipanion'
 import chalk from 'chalk'
 import ora from 'ora'
-import validateHTML, {
+import type {
   ValidationMessageLocationObject,
   ParsedJsonAsValidationResults
 } from 'html-validator'
+import validateHTML from 'html-validator'
 import { table } from 'table'
 
 import { isExistingPath } from './utils/isExistingPath.js'
@@ -103,27 +104,27 @@ export class HTMLValidatorCommand extends Command {
           } else {
             throw new Error('Invalid type')
           }
-          const isValidHTML = result.messages.length === 0
-          if (isValidHTML) {
+          const hasErrors = result.messages.some((message) => {
+            return message.type === 'error'
+          })
+          if (!hasErrors) {
             loader.succeed()
           } else {
             loader.fail()
             const messagesTable: string[][] = []
             for (const message of result.messages) {
-              const row: string[] = []
               if (message.type === 'error') {
+                const row: string[] = []
                 row.push(chalk.red(message.type))
-              } else {
-                row.push(chalk.yellow(message.type))
+                row.push(message.message)
+                const violation = message as ValidationMessageLocationObject
+                if (violation.extract != null) {
+                  row.push(
+                    `line: ${violation.lastLine}, column: ${violation.firstColumn}-${violation.lastColumn}`
+                  )
+                }
+                messagesTable.push(row)
               }
-              row.push(message.message)
-              const violation = message as ValidationMessageLocationObject
-              if (violation.extract != null) {
-                row.push(
-                  `line: ${violation.lastLine}, column: ${violation.firstColumn}-${violation.lastColumn}`
-                )
-              }
-              messagesTable.push(row)
             }
             errors.push({ data, messagesTable })
             isValid = false

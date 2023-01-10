@@ -43,12 +43,12 @@ const printResults = (results: Result[]): void => {
 }
 
 export class HTMLValidatorCommand extends Command {
-  static usage = {
+  static override usage = {
     description:
       'CLI for validating multiple html pages using <https://validator.w3.org/>.'
   }
 
-  async execute(): Promise<number> {
+  public async execute(): Promise<number> {
     const configPath = path.join(CURRENT_DIRECTORY, CONFIG_FILE_NAME)
     try {
       if (!(await isExistingPath(configPath))) {

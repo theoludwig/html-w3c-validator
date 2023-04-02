@@ -6,8 +6,8 @@
     "test:html-w3c-validator": "start-server-and-test \"start\" \"http://127.0.0.1:3000\" \"html-w3c-validator\""
   },
   "devDependencies": {
-    "serve": "14.1.2",
-    "start-server-and-test": "1.15.2",
+    "serve": "14.2.0",
+    "start-server-and-test": "2.0.0",
     "html-w3c-validator": "file:.."
   }
 }

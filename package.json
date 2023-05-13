@@ -22,13 +22,17 @@
   ],
   "main": "build/index.js",
   "bin": "build/index.js",
+  "files": [
+    "build"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=9.0.0"
   },
-  "files": [
-    "build"
-  ],
   "scripts": {
     "build": "rimraf ./build && swc ./src --out-dir ./build",
     "build:typescript": "tsc",

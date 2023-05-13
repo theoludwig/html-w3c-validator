@@ -3,7 +3,6 @@
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
-    "davidanson.vscode-markdownlint",
-    "ms-azuretools.vscode-docker"
+    "davidanson.vscode-markdownlint"
   ]
 }

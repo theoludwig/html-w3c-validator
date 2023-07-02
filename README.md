@@ -71,7 +71,10 @@ npm install --save-dev html-w3c-validator start-server-and-test
   "urls": ["http://127.0.0.1:3000/", "http://127.0.0.1:3000/about"],
 
   // You can also specify HTML files instead of URLs
-  "files": ["./index.html", "./about.html"]
+  "files": ["./index.html", "./about.html"],
+
+  // Specify the severities of the validator (default: ["error"])
+  "severities": ["info", "warning", "error"]
 }
 ```
 

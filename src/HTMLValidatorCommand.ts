@@ -17,9 +17,14 @@ import { isExistingPath } from './utils/isExistingPath.js'
 const CURRENT_DIRECTORY = process.cwd()
 const CONFIG_FILE_NAME = '.html-w3c-validatorrc.json'
 
+const severities = ['error', 'warning', 'info'] as const
+
+export type Severity = (typeof severities)[number]
+
 interface Config {
   urls?: string[]
   files?: string[]
+  severities?: Severity[]
 }
 
 interface Error {
@@ -53,7 +58,7 @@ export class HTMLValidatorCommand extends Command {
     try {
       if (!(await isExistingPath(configPath))) {
         throw new Error(
-          `No config file found at ${configPath}. Please create ${CONFIG_FILE_NAME}.`
+          `No config file found at ${configPath}. Please create "${CONFIG_FILE_NAME}".`
         )
       }
       const configData = await fs.promises.readFile(configPath, {
@@ -66,12 +71,19 @@ export class HTMLValidatorCommand extends Command {
       } catch {
         isValidConfig = false
       }
-      isValidConfig =
-        isValidConfig &&
-        (Array.isArray(config.urls) || Array.isArray(config.urls))
       if (!isValidConfig) {
         throw new Error(
-          `Invalid config file at ${configPath}. Please check the syntax.`
+          `Invalid config file at "${configPath}". Please check the JSON syntax.`
+        )
+      }
+      if (config.urls != null && !Array.isArray(config.urls)) {
+        throw new Error(
+          `Invalid config file at "${configPath}". Please include an array of URLs.`
+        )
+      }
+      if (config.files != null && !Array.isArray(config.files)) {
+        throw new Error(
+          `Invalid config file at "${configPath}". Please include an array of files.`
         )
       }
       const urls =
@@ -87,6 +99,28 @@ export class HTMLValidatorCommand extends Command {
               return { type: 'file', data: file }
             })
       const dataToValidate = [...urls, ...files]
+      if (dataToValidate.length === 0) {
+        throw new Error(
+          `Invalid config file at "${configPath}". Please add URLs or files.`
+        )
+      }
+      const configSeverities: Severity[] = config.severities ?? ['error']
+      for (const severity of configSeverities) {
+        if (!severities.includes(severity)) {
+          throw new Error(
+            `Invalid config file at "${configPath}". Please add valid severities (${severities.join(
+              ', '
+            )}).`
+          )
+        }
+      }
+      if (configSeverities.length === 0) {
+        throw new Error(
+          `Invalid config file at "${configPath}". Please add valid severities (${severities.join(
+            ', '
+          )}).`
+        )
+      }
       const errors: Error[] = []
       let isValid = true
       const loader = ora(`Validating HTML (W3C)...`).start()
@@ -108,7 +142,7 @@ export class HTMLValidatorCommand extends Command {
               const htmlPath = path.resolve(CURRENT_DIRECTORY, data)
               if (!(await isExistingPath(htmlPath))) {
                 throw new Error(
-                  `No file found at ${htmlPath}. Please check the path.`
+                  `No file found at "${htmlPath}". Please check the path.`
                 )
               }
               const html = await fs.promises.readFile(htmlPath, {
@@ -122,7 +156,10 @@ export class HTMLValidatorCommand extends Command {
               throw new Error('Invalid type')
             }
             const hasErrors = result.messages.some((message) => {
-              return message.type === 'error'
+              return (
+                configSeverities.includes(message.type as Severity) ||
+                configSeverities.includes(message.subType as Severity)
+              )
             })
             if (!hasErrors) {
               results.push({ data, isSuccess: true })
@@ -130,18 +167,24 @@ export class HTMLValidatorCommand extends Command {
               results.push({ data, isSuccess: false })
               const messagesTable: string[][] = []
               for (const message of result.messages) {
-                if (message.type === 'error') {
-                  const row: string[] = []
-                  row.push(chalk.red(message.type))
-                  row.push(message.message)
-                  const violation = message as ValidationMessageLocationObject
-                  if (violation.extract != null) {
-                    row.push(
-                      `line: ${violation.lastLine}, column: ${violation.firstColumn}-${violation.lastColumn}`
-                    )
+                const row: string[] = []
+                if (message.type === 'info') {
+                  if (message.subType === 'warning') {
+                    row.push(chalk.yellow(message.subType))
+                  } else {
+                    row.push(chalk.blue(message.type))
                   }
-                  messagesTable.push(row)
+                } else {
+                  row.push(chalk.red(message.type))
                 }
+                row.push(message.message)
+                const violation = message as ValidationMessageLocationObject
+                if (violation.extract != null) {
+                  row.push(
+                    `line: ${violation.lastLine}, column: ${violation.firstColumn}-${violation.lastColumn}`
+                  )
+                }
+                messagesTable.push(row)
               }
               errors.push({ data, messagesTable })
               isValid = false

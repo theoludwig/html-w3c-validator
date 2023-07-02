@@ -24,7 +24,8 @@
   "bin": "build/index.js",
   "files": [
     "build",
-    "!**/*.test.js"
+    "!**/*.test.js",
+    "!**/*.map"
   ],
   "publishConfig": {
     "access": "public",
@@ -37,13 +38,14 @@
   "scripts": {
     "build": "rimraf ./build && swc ./src --out-dir ./build",
     "build:typescript": "tsc",
+    "start": "node --enable-source-maps build/index.js",
     "lint:commit": "commitlint",
     "lint:editorconfig": "editorconfig-checker",
     "lint:markdown": "markdownlint-cli2",
     "lint:eslint": "eslint . --ignore-path .gitignore",
     "lint:prettier": "prettier . --check --ignore-path .gitignore",
     "lint:staged": "lint-staged",
-    "test": "node --test build/",
+    "test": "node --enable-source-maps --test build/",
     "release": "semantic-release"
   },
   "dependencies": {

@@ -23,7 +23,8 @@
   "main": "build/index.js",
   "bin": "build/index.js",
   "files": [
-    "build"
+    "build",
+    "!**/*.test.js"
   ],
   "publishConfig": {
     "access": "public",

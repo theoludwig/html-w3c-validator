@@ -4,16 +4,16 @@
   "public": true,
   "description": "CLI for validating multiple html pages using validator.w3.org.",
   "type": "module",
-  "author": "Divlo <contact@divlo.fr>",
+  "author": "Théo LUDWIG <contact@theoludwig.fr>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Divlo/html-w3c-validator.git"
+    "url": "https://github.com/theoludwig/html-w3c-validator.git"
   },
   "bugs": {
-    "url": "https://github.com/Divlo/html-w3c-validator/issues"
+    "url": "https://github.com/theoludwig/html-w3c-validator/issues"
   },
-  "homepage": "https://github.com/Divlo/html-w3c-validator#readme",
+  "homepage": "https://github.com/theoludwig/html-w3c-validator#readme",
   "keywords": [
     "cli",
     "html-validator",

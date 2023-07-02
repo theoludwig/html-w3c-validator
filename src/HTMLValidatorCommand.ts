@@ -104,7 +104,10 @@ export class HTMLValidatorCommand extends Command {
           `Invalid config file at "${configPath}". Please add URLs or files.`
         )
       }
-      const configSeverities: Severity[] = config.severities ?? ['error']
+      const configSeverities: Severity[] = config.severities ?? [
+        'warning',
+        'error'
+      ]
       for (const severity of configSeverities) {
         if (!severities.includes(severity)) {
           throw new Error(

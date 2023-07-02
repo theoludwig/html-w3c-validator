@@ -73,7 +73,7 @@ npm install --save-dev html-w3c-validator start-server-and-test
   // You can also specify HTML files instead of URLs
   "files": ["./index.html", "./about.html"],
 
-  // Specify the severities of the validator (default: ["error"])
+  // Specify the severities of the validator (default: ["warning", "error"])
   "severities": ["info", "warning", "error"]
 }
 ```

@@ -17,9 +17,9 @@ import { isExistingPath } from './utils/isExistingPath.js'
 
 export const CONFIG_FILE_NAME = '.html-w3c-validatorrc.json'
 
-const severities = ['error', 'warning', 'info'] as const
+export const SEVERITIES = ['error', 'warning', 'info'] as const
 
-export type Severity = (typeof severities)[number]
+export type Severity = (typeof SEVERITIES)[number]
 
 interface Config {
   urls?: string[]
@@ -113,22 +113,19 @@ export class HTMLValidatorCommand extends Command {
           `Invalid config file at "${configPath}". Please add URLs or files.`
         )
       }
-      const configSeverities: Severity[] = config.severities ?? [
-        'warning',
-        'error'
-      ]
-      for (const severity of configSeverities) {
-        if (!severities.includes(severity)) {
+      const severities: Severity[] = config.severities ?? ['warning', 'error']
+      for (const severity of severities) {
+        if (!SEVERITIES.includes(severity)) {
           throw new Error(
-            `Invalid config file at "${configPath}". Please add valid severities (${severities.join(
+            `Invalid config file at "${configPath}". Please add valid severities (${SEVERITIES.join(
               ', '
             )}).`
           )
         }
       }
-      if (configSeverities.length === 0) {
+      if (severities.length === 0) {
         throw new Error(
-          `Invalid config file at "${configPath}". Please add valid severities (${severities.join(
+          `Invalid config file at "${configPath}". Please add valid severities (${SEVERITIES.join(
             ', '
           )}).`
         )
@@ -169,8 +166,8 @@ export class HTMLValidatorCommand extends Command {
             }
             const hasErrors = result.messages.some((message) => {
               return (
-                configSeverities.includes(message.type as Severity) ||
-                configSeverities.includes(message.subType as Severity)
+                severities.includes(message.type as Severity) ||
+                severities.includes(message.subType as Severity)
               )
             })
             if (!hasErrors) {

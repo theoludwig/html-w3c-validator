@@ -374,4 +374,43 @@ await test('html-w3c-validator', async (t) => {
       errors.join('\n')
     )
   })
+
+  await t.test('fails with invalid W3C HTML', async () => {
+    const workingDirectory = path.join(FIXTURES_PATH, 'error-invalid-w3c-html')
+    const errors: string[] = []
+    sinon.stub(console, 'error').value((error: string) => {
+      errors.push(error)
+    })
+    const consoleErrorSpy = sinon.spy(console, 'error')
+    const stream = new PassThrough()
+    const exitCode = await cli.run(
+      [`--current-working-directory=${workingDirectory}`],
+      {
+        stdin: process.stdin,
+        stdout: stream,
+        stderr: stream
+      }
+    )
+    stream.end()
+    assert.strictEqual(exitCode, 1)
+    const messagesTable = [
+      [
+        chalk.yellow('warning'),
+        'Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.',
+        'line: 2, column: 16-6'
+      ]
+    ]
+    assert.strictEqual(
+      consoleErrorSpy.calledWith(
+        chalk.bold.red('Error:') + ' HTML validation (W3C) failed!'
+      ),
+      true,
+      errors.join('\n')
+    )
+    assert.strictEqual(
+      consoleErrorSpy.calledWith(table(messagesTable)),
+      true,
+      errors.join('\n')
+    )
+  })
 })

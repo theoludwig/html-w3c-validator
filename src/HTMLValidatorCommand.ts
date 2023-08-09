@@ -176,6 +176,13 @@ export class HTMLValidatorCommand extends Command {
               results.push({ data, isSuccess: false })
               const messagesTable: string[][] = []
               for (const message of result.messages) {
+                if (
+                  !severities.includes(message.type as Severity) &&
+                  !severities.includes(message.subType as Severity)
+                ) {
+                  continue
+                }
+
                 const row: string[] = []
                 if (message.type === 'info') {
                   if (message.subType === 'warning') {

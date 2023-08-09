@@ -1,7 +1,8 @@
 import path from 'node:path'
 import fs from 'node:fs'
 
-import { Command } from 'clipanion'
+import { Command, Option } from 'clipanion'
+import * as typanion from 'typanion'
 import chalk from 'chalk'
 import ora from 'ora'
 import logSymbols from 'log-symbols'
@@ -14,8 +15,7 @@ import { table } from 'table'
 
 import { isExistingPath } from './utils/isExistingPath.js'
 
-const CURRENT_DIRECTORY = process.cwd()
-const CONFIG_FILE_NAME = '.html-w3c-validatorrc.json'
+export const CONFIG_FILE_NAME = '.html-w3c-validatorrc.json'
 
 const severities = ['error', 'warning', 'info'] as const
 
@@ -53,8 +53,17 @@ export class HTMLValidatorCommand extends Command {
       'CLI for validating multiple html pages using <https://validator.w3.org/>.'
   }
 
+  public currentWorkingDirectory = Option.String(
+    '--current-working-directory',
+    process.cwd(),
+    {
+      description: 'The current working directory.',
+      validator: typanion.isString()
+    }
+  )
+
   public async execute(): Promise<number> {
-    const configPath = path.join(CURRENT_DIRECTORY, CONFIG_FILE_NAME)
+    const configPath = path.join(this.currentWorkingDirectory, CONFIG_FILE_NAME)
     try {
       if (!(await isExistingPath(configPath))) {
         throw new Error(
@@ -142,7 +151,7 @@ export class HTMLValidatorCommand extends Command {
                 ...options
               })
             } else if (type === 'file') {
-              const htmlPath = path.resolve(CURRENT_DIRECTORY, data)
+              const htmlPath = path.resolve(this.currentWorkingDirectory, data)
               if (!(await isExistingPath(htmlPath))) {
                 throw new Error(
                   `No file found at "${htmlPath}". Please check the path.`

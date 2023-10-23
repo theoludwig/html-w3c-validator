@@ -1,23 +1,23 @@
-import path from 'node:path'
-import fs from 'node:fs'
+import path from "node:path"
+import fs from "node:fs"
 
-import { Command, Option } from 'clipanion'
-import * as typanion from 'typanion'
-import chalk from 'chalk'
-import ora from 'ora'
-import logSymbols from 'log-symbols'
+import { Command, Option } from "clipanion"
+import * as typanion from "typanion"
+import chalk from "chalk"
+import ora from "ora"
+import logSymbols from "log-symbols"
 import type {
   ValidationMessageLocationObject,
-  ParsedJsonAsValidationResults
-} from 'html-validator'
-import validateHTML from 'html-validator'
-import { table } from 'table'
+  ParsedJsonAsValidationResults,
+} from "html-validator"
+import validateHTML from "html-validator"
+import { table } from "table"
 
-import { isExistingPath } from './utils/isExistingPath.js'
+import { isExistingPath } from "./utils/isExistingPath.js"
 
-export const CONFIG_FILE_NAME = '.html-w3c-validatorrc.json'
+export const CONFIG_FILE_NAME = ".html-w3c-validatorrc.json"
 
-export const SEVERITIES = ['error', 'warning', 'info'] as const
+export const SEVERITIES = ["error", "warning", "info"] as const
 
 export type Severity = (typeof SEVERITIES)[number]
 
@@ -50,16 +50,16 @@ const printResults = (results: Result[]): void => {
 export class HTMLValidatorCommand extends Command {
   static override usage = {
     description:
-      'CLI for validating multiple html pages using <https://validator.w3.org/>.'
+      "CLI for validating multiple html pages using <https://validator.w3.org/>.",
   }
 
   public currentWorkingDirectory = Option.String(
-    '--current-working-directory',
+    "--current-working-directory",
     process.cwd(),
     {
-      description: 'The current working directory.',
-      validator: typanion.isString()
-    }
+      description: "The current working directory.",
+      validator: typanion.isString(),
+    },
   )
 
   public async execute(): Promise<number> {
@@ -67,11 +67,11 @@ export class HTMLValidatorCommand extends Command {
     try {
       if (!(await isExistingPath(configPath))) {
         throw new Error(
-          `No config file found at ${configPath}. Please create "${CONFIG_FILE_NAME}".`
+          `No config file found at ${configPath}. Please create "${CONFIG_FILE_NAME}".`,
         )
       }
       const configData = await fs.promises.readFile(configPath, {
-        encoding: 'utf-8'
+        encoding: "utf-8",
       })
       let config: Config = { urls: [], files: [] }
       let isValidConfig = true
@@ -82,52 +82,52 @@ export class HTMLValidatorCommand extends Command {
       }
       if (!isValidConfig) {
         throw new Error(
-          `Invalid config file at "${configPath}". Please check the JSON syntax.`
+          `Invalid config file at "${configPath}". Please check the JSON syntax.`,
         )
       }
       if (config.urls != null && !Array.isArray(config.urls)) {
         throw new Error(
-          `Invalid config file at "${configPath}". Please include an array of URLs.`
+          `Invalid config file at "${configPath}". Please include an array of URLs.`,
         )
       }
       if (config.files != null && !Array.isArray(config.files)) {
         throw new Error(
-          `Invalid config file at "${configPath}". Please include an array of files.`
+          `Invalid config file at "${configPath}". Please include an array of files.`,
         )
       }
       const urls =
         config.urls == null
           ? []
           : config.urls.map((url) => {
-              return { type: 'url', data: url }
+              return { type: "url", data: url }
             })
       const files =
         config.files == null
           ? []
           : config.files.map((file) => {
-              return { type: 'file', data: file }
+              return { type: "file", data: file }
             })
       const dataToValidate = [...urls, ...files]
       if (dataToValidate.length === 0) {
         throw new Error(
-          `Invalid config file at "${configPath}". Please add URLs or files.`
+          `Invalid config file at "${configPath}". Please add URLs or files.`,
         )
       }
-      const severities: Severity[] = config.severities ?? ['warning', 'error']
+      const severities: Severity[] = config.severities ?? ["warning", "error"]
       for (const severity of severities) {
         if (!SEVERITIES.includes(severity)) {
           throw new Error(
             `Invalid config file at "${configPath}". Please add valid severities (${SEVERITIES.join(
-              ', '
-            )}).`
+              ", ",
+            )}).`,
           )
         }
       }
       if (severities.length === 0) {
         throw new Error(
           `Invalid config file at "${configPath}". Please add valid severities (${SEVERITIES.join(
-            ', '
-          )}).`
+            ", ",
+          )}).`,
         )
       }
       const errors: Error[] = []
@@ -138,31 +138,31 @@ export class HTMLValidatorCommand extends Command {
         dataToValidate.map(async ({ data, type }) => {
           try {
             const options = {
-              format: 'json' as 'json' | undefined
+              format: "json" as "json" | undefined,
             }
             let result: ParsedJsonAsValidationResults | undefined
-            if (type === 'url') {
+            if (type === "url") {
               result = await validateHTML({
                 url: data,
                 isLocal: true,
-                ...options
+                ...options,
               })
-            } else if (type === 'file') {
+            } else if (type === "file") {
               const htmlPath = path.resolve(this.currentWorkingDirectory, data)
               if (!(await isExistingPath(htmlPath))) {
                 throw new Error(
-                  `No file found at "${htmlPath}". Please check the path.`
+                  `No file found at "${htmlPath}". Please check the path.`,
                 )
               }
               const html = await fs.promises.readFile(htmlPath, {
-                encoding: 'utf-8'
+                encoding: "utf-8",
               })
               result = await validateHTML({
                 data: html,
-                ...options
+                ...options,
               })
             } else {
-              throw new Error('Invalid type')
+              throw new Error("Invalid type")
             }
             const hasErrors = result.messages.some((message) => {
               return (
@@ -184,8 +184,8 @@ export class HTMLValidatorCommand extends Command {
                 }
 
                 const row: string[] = []
-                if (message.type === 'info') {
-                  if (message.subType === 'warning') {
+                if (message.type === "info") {
+                  if (message.subType === "warning") {
                     row.push(chalk.yellow(message.subType))
                   } else {
                     row.push(chalk.blue(message.type))
@@ -197,7 +197,7 @@ export class HTMLValidatorCommand extends Command {
                 const violation = message as ValidationMessageLocationObject
                 if (violation.extract != null) {
                   row.push(
-                    `line: ${violation.lastLine}, column: ${violation.firstColumn}-${violation.lastColumn}`
+                    `line: ${violation.lastLine}, column: ${violation.firstColumn}-${violation.lastColumn}`,
                   )
                 }
                 messagesTable.push(row)
@@ -212,7 +212,7 @@ export class HTMLValidatorCommand extends Command {
               errors.push({ data, messagesTable })
             }
           }
-        })
+        }),
       )
       if (!isValid) {
         loader.fail()
@@ -220,22 +220,22 @@ export class HTMLValidatorCommand extends Command {
         for (const error of errors) {
           console.error(`\n${error.data}`)
           console.error(table(error.messagesTable))
-          console.error('------------------------------')
+          console.error("------------------------------")
         }
         console.error()
-        throw new Error('HTML validation (W3C) failed!')
+        throw new Error("HTML validation (W3C) failed!")
       }
       loader.succeed(
-        `${chalk.bold.green('Success:')} HTML validation (W3C) passed! 🎉`
+        `${chalk.bold.green("Success:")} HTML validation (W3C) passed! 🎉`,
       )
       printResults(results)
       return 0
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`${chalk.bold.red('Error:')} ${error.message}`)
+        console.error(`${chalk.bold.red("Error:")} ${error.message}`)
       } else {
         console.error(
-          `${chalk.bold.red('Error:')} HTML validation (W3C) failed!`
+          `${chalk.bold.red("Error:")} HTML validation (W3C) failed!`,
         )
       }
       return 1

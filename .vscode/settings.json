@@ -5,7 +5,7 @@
   "prettier.configPath": ".prettierrc.json",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "explicit"
   },
   "eslint.options": {
     "ignorePath": ".gitignore"

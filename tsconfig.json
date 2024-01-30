@@ -9,6 +9,6 @@
     "rootDir": "./src",
     "noEmit": true,
     "exactOptionalPropertyTypes": false,
-    "checkJs": false
-  }
+    "checkJs": false,
+  },
 }

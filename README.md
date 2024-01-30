@@ -40,7 +40,7 @@ You can combine **html-w3c-validator** with [start-server-and-test](https://gith
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) >= 16.0.0
+[Node.js](https://nodejs.org/) >= 16.0.0
 
 ### Installation (with [start-server-and-test](https://github.com/bahmutov/start-server-and-test))
 
@@ -59,8 +59,8 @@ npm install --save-dev html-w3c-validator start-server-and-test
     "start": "serve \"./build\"",
 
     // Command to validate your HTML pages
-    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://127.0.0.1:3000\" \"html-w3c-validator\""
-  }
+    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://127.0.0.1:3000\" \"html-w3c-validator\"",
+  },
 }
 ```
 
@@ -74,7 +74,7 @@ npm install --save-dev html-w3c-validator start-server-and-test
   "files": ["./index.html", "./about.html"],
 
   // Specify the severities of the validator (default: ["warning", "error"])
-  "severities": ["info", "warning", "error"]
+  "severities": ["info", "warning", "error"],
 }
 ```
 

@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+npm run lint:staged
+npm run build:typescript

@@ -98,8 +98,9 @@ See the [./example](./example) folder for practical usage.
 ### Options
 
 ```text
--V, --version       Output the version number.
--h, --help          Display help for command.
+--current-working-directory #0    The current working directory (default: process.cwd()).
+-V, --version                     Output the version number.
+-h, --help                        Display help for command.
 ```
 
 ## 💡 Contributing

@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/develop/schema/html-w3c-validatorrc-schema.json",
   "files": ["./index.html"],
   "severities": ["errors-invalid"]
 }

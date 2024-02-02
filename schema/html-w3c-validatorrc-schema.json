@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/main/schema/html-w3c-validatorrc-schema.json",
+  "title": "html-w3c-validator configuration schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "description": "JSON Schema URI",
+      "type": "string",
+      "default": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/main/schema/html-w3c-validatorrc-schema.json"
+    },
+    "urls": {
+      "description": "URLs to validate.",
+      "type": "array",
+      "default": [],
+      "minItems": 1,
+      "items": {
+        "description": "URL to validate.",
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "files": {
+      "description": "Files to validate.",
+      "type": "array",
+      "minItems": 1,
+      "default": [],
+      "items": {
+        "description": "File to validate.",
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "severities": {
+      "description": "Specify the severities of the validator messages to report.",
+      "type": "array",
+      "minItems": 1,
+      "default": ["warning", "error"],
+      "items": {
+        "description": "Severity to report.",
+        "type": "string",
+        "enum": ["error", "warning", "info"]
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -68,12 +68,15 @@ npm install --save-dev html-w3c-validator start-server-and-test
 
 ```json
 {
+  "$schema": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/main/schema/html-w3c-validatorrc-schema.json",
+
+  // URLs to validate.
   "urls": ["http://127.0.0.1:3000/", "http://127.0.0.1:3000/about"],
 
-  // You can also specify HTML files instead of URLs
+  // Files to validate.
   "files": ["./index.html", "./about.html"],
 
-  // Specify the severities of the validator (default: ["warning", "error"])
+  // Specify the severities of the validator messages to report. (default: ["warning", "error"])
   "severities": ["info", "warning", "error"]
 }
 ```

@@ -3,15 +3,13 @@ import path from "node:path"
 
 import chalk from "chalk"
 import { Command, Option } from "clipanion"
-import type {
-  ParsedJsonAsValidationResults,
-  ValidationMessageLocationObject,
-} from "html-validator"
-import validateHTML from "html-validator"
 import logSymbols from "log-symbols"
 import ora from "ora"
 import { table } from "table"
 import * as typanion from "typanion"
+
+import type { ValidateHTMLResult } from "./validateHTML.js"
+import { getHTMLFromURL, validateHTML } from "./validateHTML.js"
 
 export const CONFIG_FILE_NAME = ".html-w3c-validatorrc.json"
 
@@ -133,15 +131,10 @@ export class HTMLValidatorCommand extends Command {
       await Promise.all(
         dataToValidate.map(async ({ data, type }) => {
           try {
-            const options = {
-              format: "json" as "json" | undefined,
-            }
-            let result: ParsedJsonAsValidationResults | undefined
+            let result: ValidateHTMLResult | undefined
             if (type === "url") {
               result = await validateHTML({
-                url: data,
-                isLocal: true,
-                ...options,
+                htmlData: await getHTMLFromURL(data),
               })
             } else if (type === "file") {
               const htmlPath = path.resolve(this.currentWorkingDirectory, data)
@@ -156,8 +149,7 @@ export class HTMLValidatorCommand extends Command {
                 )
               }
               result = await validateHTML({
-                data: html,
-                ...options,
+                htmlData: html,
               })
             } else {
               throw new Error("Invalid type")
@@ -192,10 +184,9 @@ export class HTMLValidatorCommand extends Command {
                   row.push(chalk.red(message.type))
                 }
                 row.push(message.message)
-                const violation = message as ValidationMessageLocationObject
-                if (violation.extract != null) {
+                if (message.extract != null) {
                   row.push(
-                    `line: ${violation.lastLine}, column: ${violation.firstColumn}-${violation.lastColumn}`,
+                    `line: ${message.lastLine}, column: ${message.firstColumn}-${message.lastColumn}`,
                   )
                 }
                 messagesTable.push(row)

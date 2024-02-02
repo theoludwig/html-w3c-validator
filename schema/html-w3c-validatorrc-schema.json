@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/main/schema/html-w3c-validatorrc-schema.json",
+  "$id": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/master/schema/html-w3c-validatorrc-schema.json",
   "title": "html-w3c-validator configuration schema",
   "type": "object",
   "properties": {
@@ -8,7 +8,7 @@
       "description": "JSON Schema URI",
       "type": "string",
       "format": "uri",
-      "default": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/main/schema/html-w3c-validatorrc-schema.json"
+      "default": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/master/schema/html-w3c-validatorrc-schema.json"
     },
     "urls": {
       "description": "URLs to validate.",

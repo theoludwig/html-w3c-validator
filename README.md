@@ -66,7 +66,7 @@ npm install --save-dev html-w3c-validator start-server-and-test
 
 ```jsonc
 {
-  "$schema": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/main/schema/html-w3c-validatorrc-schema.json",
+  "$schema": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/master/schema/html-w3c-validatorrc-schema.json",
 
   // URLs to validate.
   "urls": ["http://127.0.0.1:3000/", "http://127.0.0.1:3000/about"],

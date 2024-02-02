@@ -1,7 +1,7 @@
 {
   "name": "html-w3c-validator",
   "version": "0.0.0-development",
-  "description": "CLI for validating multiple html pages using validator.w3.org.",
+  "description": "CLI for validating HTML pages using validator.w3.org.",
   "public": true,
   "types": "module",
   "type": "module",

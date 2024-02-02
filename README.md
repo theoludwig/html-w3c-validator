@@ -1,9 +1,7 @@
 <h1 align="center">html-w3c-validator</h1>
 
 <p align="center">
-  <strong>CLI for validating multiple html pages using <a href="https://validator.w3.org/">validator.w3.org</a>.</strong>
-</p>
-
+  <strong>CLI for validating HTML pages using <a href="https://validator.w3.org/">validator.w3.org</a>.</strong>
 </p>
 
 <p align="center">
@@ -22,11 +20,11 @@
 
 ## 📜 About
 
-**html-w3c-validator** is a CLI tool to validate multiple html pages using [validator.w3.org](https://validator.w3.org/).
+**html-w3c-validator** is a CLI tool to validate HTML pages using [validator.w3.org](https://validator.w3.org/).
 
 You might use a JavaScript framework or simply use HTML but **you should always validate your production HTML** and this validation should be part of your CI/CD pipeline (tests, linting, etc.).
 
-### Why should I validate my HTML pages?
+### Why is HTML page validation important?
 
 Quote from [https://validator.w3.org/docs/help.html#why-validate](https://validator.w3.org/docs/help.html#why-validate):
 
@@ -52,21 +50,21 @@ npm install --save-dev html-w3c-validator start-server-and-test
 
 ### `package.json`
 
-```json
+```jsonc
 {
   "scripts": {
     // Command to start the server serving your HTML pages (e.g: using vercel/serve)
     "start": "serve \"./build\"",
 
     // Command to validate your HTML pages
-    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://127.0.0.1:3000\" \"html-w3c-validator\""
-  }
+    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://127.0.0.1:3000\" \"html-w3c-validator\"",
+  },
 }
 ```
 
 ### `.html-w3c-validatorrc.json`
 
-```json
+```jsonc
 {
   "$schema": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/main/schema/html-w3c-validatorrc-schema.json",
 
@@ -77,7 +75,7 @@ npm install --save-dev html-w3c-validator start-server-and-test
   "files": ["./index.html", "./about.html"],
 
   // Specify the severities of the validator messages to report. (default: ["warning", "error"])
-  "severities": ["info", "warning", "error"]
+  "severities": ["info", "warning", "error"],
 }
 ```
 
@@ -101,7 +99,7 @@ See the [./example](./example) folder for practical usage.
 ### Options
 
 ```text
---current-working-directory <path>  The current working directory (default: process.cwd()).
+--current-working-directory <path>  The current working directory (default: `process.cwd()`).
 -V, --version                       Output the version number.
 -h, --help                          Display help for command.
 ```

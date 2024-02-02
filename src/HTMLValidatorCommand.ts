@@ -48,7 +48,7 @@ const printResults = (results: Result[]): void => {
 export class HTMLValidatorCommand extends Command {
   static override usage = {
     description:
-      "CLI for validating multiple html pages using <https://validator.w3.org/>.",
+      "CLI for validating HTML pages using <https://validator.w3.org/>.",
   }
 
   public currentWorkingDirectory = Option.String(

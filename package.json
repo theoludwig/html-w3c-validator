@@ -47,7 +47,9 @@
     "lint:staged": "lint-staged",
     "test": "node --enable-source-maps --test",
     "release": "semantic-release",
-    "postinstall": "husky"
+    "postinstall": "husky",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "dependencies": {
     "chalk": "5.3.0",

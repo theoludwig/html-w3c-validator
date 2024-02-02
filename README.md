@@ -52,21 +52,21 @@ npm install --save-dev html-w3c-validator start-server-and-test
 
 ### `package.json`
 
-```jsonc
+```json
 {
   "scripts": {
     // Command to start the server serving your HTML pages (e.g: using vercel/serve)
     "start": "serve \"./build\"",
 
     // Command to validate your HTML pages
-    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://127.0.0.1:3000\" \"html-w3c-validator\"",
-  },
+    "test:html-w3c-validator": "start-server-and-test \"start\" \"http://127.0.0.1:3000\" \"html-w3c-validator\""
+  }
 }
 ```
 
 ### `.html-w3c-validatorrc.json`
 
-```jsonc
+```json
 {
   "urls": ["http://127.0.0.1:3000/", "http://127.0.0.1:3000/about"],
 
@@ -74,7 +74,7 @@ npm install --save-dev html-w3c-validator start-server-and-test
   "files": ["./index.html", "./about.html"],
 
   // Specify the severities of the validator (default: ["warning", "error"])
-  "severities": ["info", "warning", "error"],
+  "severities": ["info", "warning", "error"]
 }
 ```
 
@@ -98,9 +98,9 @@ See the [./example](./example) folder for practical usage.
 ### Options
 
 ```text
---current-working-directory #0    The current working directory (default: process.cwd()).
--V, --version                     Output the version number.
--h, --help                        Display help for command.
+--current-working-directory <path>  The current working directory (default: process.cwd()).
+-V, --version                       Output the version number.
+-h, --help                          Display help for command.
 ```
 
 ## 💡 Contributing

@@ -1,7 +1,9 @@
 import test from "node:test"
 import assert from "node:assert/strict"
 import path from "node:path"
+import fs from "node:fs"
 import { PassThrough } from "node:stream"
+import { fileURLToPath } from "node:url"
 
 import sinon from "sinon"
 import { execa } from "execa"
@@ -33,7 +35,10 @@ await test("html-w3c-validator", async (t) => {
     async () => {
       const exampleURL = new URL("../../example", import.meta.url)
       process.chdir(exampleURL.pathname)
-      await execa("rimraf", ["node_modules"])
+      await fs.promises.rm(
+        path.join(fileURLToPath(exampleURL), "node_modules"),
+        { recursive: true, force: true },
+      )
       await execa("npm", ["install"])
       const { exitCode } = await execa("npm", [
         "run",

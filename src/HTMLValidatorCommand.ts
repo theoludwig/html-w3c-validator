@@ -1,19 +1,17 @@
-import path from "node:path"
 import fs from "node:fs"
+import path from "node:path"
 
-import { Command, Option } from "clipanion"
-import * as typanion from "typanion"
 import chalk from "chalk"
-import ora from "ora"
-import logSymbols from "log-symbols"
+import { Command, Option } from "clipanion"
 import type {
-  ValidationMessageLocationObject,
   ParsedJsonAsValidationResults,
+  ValidationMessageLocationObject,
 } from "html-validator"
 import validateHTML from "html-validator"
+import logSymbols from "log-symbols"
+import ora from "ora"
 import { table } from "table"
-
-import { isExistingPath } from "./utils/isExistingPath.js"
+import * as typanion from "typanion"
 
 export const CONFIG_FILE_NAME = ".html-w3c-validatorrc.json"
 
@@ -65,22 +63,20 @@ export class HTMLValidatorCommand extends Command {
   public async execute(): Promise<number> {
     const configPath = path.join(this.currentWorkingDirectory, CONFIG_FILE_NAME)
     try {
-      if (!(await isExistingPath(configPath))) {
+      let configData: string
+      try {
+        configData = await fs.promises.readFile(configPath, {
+          encoding: "utf-8",
+        })
+      } catch (error) {
         throw new Error(
           `No config file found at ${configPath}. Please create "${CONFIG_FILE_NAME}".`,
         )
       }
-      const configData = await fs.promises.readFile(configPath, {
-        encoding: "utf-8",
-      })
       let config: Config = { urls: [], files: [] }
-      let isValidConfig = true
       try {
         config = JSON.parse(configData)
       } catch {
-        isValidConfig = false
-      }
-      if (!isValidConfig) {
         throw new Error(
           `Invalid config file at "${configPath}". Please check the JSON syntax.`,
         )
@@ -149,14 +145,16 @@ export class HTMLValidatorCommand extends Command {
               })
             } else if (type === "file") {
               const htmlPath = path.resolve(this.currentWorkingDirectory, data)
-              if (!(await isExistingPath(htmlPath))) {
+              let html: string
+              try {
+                html = await fs.promises.readFile(htmlPath, {
+                  encoding: "utf-8",
+                })
+              } catch (error) {
                 throw new Error(
                   `No file found at "${htmlPath}". Please check the path.`,
                 )
               }
-              const html = await fs.promises.readFile(htmlPath, {
-                encoding: "utf-8",
-              })
               result = await validateHTML({
                 data: html,
                 ...options,

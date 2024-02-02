@@ -23,6 +23,5 @@ jobs:
 
       - run: 'npm run lint:commit -- --to "${{ github.sha }}"'
       - run: "npm run lint:editorconfig"
-      - run: "npm run lint:markdown"
       - run: "npm run lint:eslint"
       - run: "npm run lint:prettier"

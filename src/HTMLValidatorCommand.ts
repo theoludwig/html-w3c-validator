@@ -66,7 +66,7 @@ export class HTMLValidatorCommand extends Command {
         configData = await fs.promises.readFile(configPath, {
           encoding: "utf-8",
         })
-      } catch (error) {
+      } catch {
         throw new Error(
           `No config file found at ${configPath}. Please create "${CONFIG_FILE_NAME}".`,
         )
@@ -143,7 +143,7 @@ export class HTMLValidatorCommand extends Command {
                 html = await fs.promises.readFile(htmlPath, {
                   encoding: "utf-8",
                 })
-              } catch (error) {
+              } catch {
                 throw new Error(
                   `No file found at "${htmlPath}". Please check the path.`,
                 )

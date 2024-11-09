@@ -2,7 +2,7 @@ name: "Release"
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   release:
@@ -13,13 +13,13 @@ jobs:
       pull-requests: "write"
       id-token: "write"
     steps:
-      - uses: "actions/checkout@v4.1.6"
+      - uses: "actions/checkout@v4.2.2"
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: "Setup Node.js"
-        uses: "actions/setup-node@v4.0.2"
+        uses: "actions/setup-node@v4.1.0"
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -28,15 +28,15 @@ jobs:
         run: "npm clean-install"
 
       - name: "Build"
-        run: "npm run build"
+        run: "node --run build"
 
-      - run: "npm run build:typescript"
+      - run: "node --run build:typescript"
 
       - name: "Verify the integrity of provenance attestations and registry signatures for installed dependencies"
         run: "npm audit signatures"
 
       - name: "Release"
-        run: "npm run release"
+        run: "node --run release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

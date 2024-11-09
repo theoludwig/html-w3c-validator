@@ -1,18 +1,17 @@
 {
   "root": true,
   "extends": ["conventions"],
-  "plugins": ["import", "promise", "unicorn"],
-  "rules": {
-    "import/extensions": ["error", "always"],
-    "unicorn/prevent-abbreviations": "error"
-  },
+  "plugins": ["promise", "unicorn"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
       "parser": "@typescript-eslint/parser",
       "plugins": ["@typescript-eslint"],
       "parserOptions": {
-        "project": "./tsconfig.json"
+        "projectService": true
+      },
+      "rules": {
+        "@typescript-eslint/no-unnecessary-condition": "off"
       }
     }
   ]

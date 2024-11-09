@@ -4,16 +4,16 @@ on:
   push:
     branches: [develop]
   pull_request:
-    branches: [master, develop]
+    branches: [main, develop]
 
 jobs:
   test:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v4.1.6"
+      - uses: "actions/checkout@v4.2.2"
 
       - name: "Setup Node.js"
-        uses: "actions/setup-node@v4.0.2"
+        uses: "actions/setup-node@v4.1.0"
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -22,7 +22,7 @@ jobs:
         run: "npm clean-install"
 
       - name: "Build"
-        run: "npm run build"
+        run: "node --run build"
 
       - name: "Test"
-        run: "npm run test"
+        run: "node --run test"

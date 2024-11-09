@@ -6,9 +6,5 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
-  },
-  "eslint.options": {
-    "ignorePath": ".gitignore"
-  },
-  "prettier.ignorePath": ".gitignore"
+  }
 }

@@ -40,8 +40,8 @@ await test("html-w3c-validator", async (t) => {
         { recursive: true, force: true },
       )
       await execa("npm", ["install"])
-      const { exitCode } = await execa("npm", [
-        "run",
+      const { exitCode } = await execa("node", [
+        "--run",
         "test:html-w3c-validator",
       ])
       assert.strictEqual(exitCode, 0)

@@ -184,10 +184,17 @@ export class HTMLValidatorCommand extends Command {
                   row.push(chalk.red(message.type))
                 }
                 row.push(message.message)
-                if (message.extract != null) {
+                if (
+                  message.extract != null &&
+                  message.lastLine != null &&
+                  message.firstColumn != null &&
+                  message.lastColumn != null
+                ) {
                   row.push(
                     `line: ${message.lastLine}, column: ${message.firstColumn}-${message.lastColumn}`,
                   )
+                } else {
+                  row.push("")
                 }
                 messagesTable.push(row)
               }

@@ -52,8 +52,8 @@ await test("html-w3c-validator", async (t) => {
     "succeeds and validate the html correctly (example without working directory)",
     async () => {
       const logs: string[] = []
-      sinon.stub(console, "log").value((log: string) => {
-        logs.push(log)
+      sinon.stub(console, "log").value((...log: string[]) => {
+        logs.push(...log)
       })
       const consoleLogSpy = sinon.spy(console, "log")
       const stream = new PassThrough()
@@ -63,7 +63,7 @@ await test("html-w3c-validator", async (t) => {
         stderr: stream,
       })
       stream.end()
-      assert.strictEqual(exitCode, 0)
+      assert.strictEqual(exitCode, 0, logs.join("\n"))
       assert.strictEqual(
         consoleLogSpy.calledWith(
           logSymbols.success,
@@ -88,8 +88,8 @@ await test("html-w3c-validator", async (t) => {
     async () => {
       const workingDirectory = path.join(FIXTURES_PATH, "success")
       const logs: string[] = []
-      sinon.stub(console, "log").value((log: string) => {
-        logs.push(log)
+      sinon.stub(console, "log").value((...log: string[]) => {
+        logs.push(...log)
       })
       const consoleLogSpy = sinon.spy(console, "log")
       const stream = new PassThrough()
@@ -102,7 +102,7 @@ await test("html-w3c-validator", async (t) => {
         },
       )
       stream.end()
-      assert.strictEqual(exitCode, 0)
+      assert.strictEqual(exitCode, 0, logs.join("\n"))
       assert.strictEqual(
         consoleLogSpy.calledWith(logSymbols.success, "./build/index.html"),
         true,
@@ -112,6 +112,53 @@ await test("html-w3c-validator", async (t) => {
         consoleLogSpy.calledWith(logSymbols.success, "./build/about.html"),
         true,
         logs.join("\n"),
+      )
+    },
+  )
+
+  await t.test(
+    "fails by validating the html correctly with 2 errors: one with line/column, the other without (GitHub issue #6)",
+    async () => {
+      const workingDirectory = path.join(FIXTURES_PATH, "issue-6")
+      const errors: string[] = []
+      sinon.stub(console, "error").value((error: string) => {
+        errors.push(error)
+      })
+      const consoleErrorSpy = sinon.spy(console, "error")
+      const stream = new PassThrough()
+      const exitCode = await cli.run(
+        [`--current-working-directory=${workingDirectory}`],
+        {
+          stdin: process.stdin,
+          stdout: stream,
+          stderr: stream,
+        },
+      )
+      stream.end()
+      assert.strictEqual(exitCode, 1)
+      const messagesTable = [
+        [
+          chalk.red("error"),
+          "The character encoding was not declared. Proceeding using “windows-1252”.",
+          "",
+        ],
+        [
+          chalk.yellow("warning"),
+          "Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.",
+          "line: 2, column: 16-7",
+        ],
+      ]
+      assert.strictEqual(
+        consoleErrorSpy.calledWith(
+          chalk.bold.red("Error:") + " HTML validation (W3C) failed!",
+        ),
+        true,
+        errors.join("\n"),
+      )
+      assert.strictEqual(
+        consoleErrorSpy.calledWith(table(messagesTable)),
+        true,
+        errors.join("\n"),
       )
     },
   )

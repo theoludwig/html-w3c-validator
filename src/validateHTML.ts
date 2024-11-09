@@ -7,9 +7,9 @@ export interface ValidationMessage {
   subType?: "warning" | "fatal" | "internal" | "io" | "schema"
   message: string
   extract?: string
-  lastLine: number
-  firstColumn: number
-  lastColumn: number
+  lastLine?: number
+  firstColumn?: number
+  lastColumn?: number
 }
 
 export interface ValidateHTMLResult {
@@ -30,7 +30,7 @@ export const validateHTML = async (
     },
   })
   if (!response.ok) {
-    throw new Error(`Failed to validate HTML`)
+    throw new Error(response.statusText)
   }
   const result = (await response.json()) as ValidateHTMLResult
   return result

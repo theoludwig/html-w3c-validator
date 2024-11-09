@@ -25,6 +25,7 @@
   "bin": "build/index.js",
   "files": [
     "build",
+    "./schema/schema.json",
     "!**/*.test.js",
     "!**/*.map"
   ],

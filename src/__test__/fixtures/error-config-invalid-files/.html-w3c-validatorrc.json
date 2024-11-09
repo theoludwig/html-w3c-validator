@@ -1,4 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/theoludwig/html-w3c-validator/develop/schema/html-w3c-validatorrc-schema.json",
+  "$schema": "../../../../schema/schema.json",
   "files": "Invalid"
 }
